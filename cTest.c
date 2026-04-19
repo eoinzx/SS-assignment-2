@@ -863,6 +863,24 @@ unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size)
   return *newBlock;
 }
 
+unsigned char invert_mix_columns(unsigned char* block, aes_block_size_t block_size) 
+{
+  char* newBlock = "";
+  for(int i = 0; i < strlen(block) * 2; i++)
+  {
+    char temp[16];
+    char* mixTemp = mixCol[i][0];
+    char* mixTemp2 = mixCol[i][1];
+        for(int j = 0; j < 15; j++)
+        {
+            temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) / (0 != (mixTemp[0/8] & 1 << (~j&7)));
+            temp[j +8] = (0 != (block[((i * 2) + 1)/8] & 1 << (~j&7))) / (0 != (mixTemp2[0/8] & 1 << (~j&7)));
+        }
+        newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
+  }
+  
+  return *newBlock;
+}
 
 unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {

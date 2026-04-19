@@ -70,5 +70,5 @@ unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_s
 int main()
 {
     unsigned char cip = encrypt("are", "sfdg", 16);
-    //decrypt(cip, "sfdg", 16);
+    decrypt(cip, "sfdg", 16);
 }

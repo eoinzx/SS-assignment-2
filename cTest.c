@@ -21,6 +21,258 @@ char yAxis13[][2] = {"d7", "a4", "d8", "27", "e3", "4c", "3c", "ff", "5d" ,"5e" 
 char yAxis14[][2] = {"ab", "72", "31", "b2", "2f", "58", "9f", "f3", "19" ,"0b" ,"e4", "ae", "8b", "1d", "28", "bb"};
 char yAxis15[][2] = {"76", "c0", "15", "75", "84", "cf", "a8", "d2", "73" ,"db" ,"79", "08", "8a", "9e", "df", "16"};
 
+unsigned char hexChecker(int* row, int* col)
+{
+    int newCol = *"";
+    char* new = "";
+
+    if (col[0] == 0)
+    {
+        if (col[1] == 0)
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 0;
+                }
+                else
+                {
+                    newCol = 1;            
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 2;
+                }
+                else
+                {
+                    newCol = 3;
+                }
+            }
+        }
+        else
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 4;
+                }
+                else
+                {
+                    newCol = 5;
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 6;
+                }
+                else
+                {
+                    newCol = 7;            
+                }          
+            }
+        }
+    }
+    else
+    {
+        if (col[1] == 0)
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 8;
+                }
+                else
+                {
+                    newCol = 9;            
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 10;
+                }
+                else
+                {
+                    newCol = 11;            
+                }
+            }
+        }
+        else
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 12;
+                }
+                else
+                {
+                    newCol = 13;            
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 14;
+                }
+                else
+                {
+                    newCol = 15;            
+                }
+            }
+        }
+    }
+
+    if (row[0] == 0)
+    {
+        if (row[1] == 0)
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis0[newCol];
+                }
+                else
+                {
+                    new = yAxis1[newCol];           
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis2[newCol];
+                }
+                else
+                {
+                    new = yAxis3[newCol];
+                }
+            }
+        }
+        else
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis4[newCol];
+                }
+                else
+                {
+                    new = yAxis5[newCol];
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis6[newCol];
+                }
+                else
+                {
+                    new = yAxis7[newCol];        
+                }          
+            }
+        }
+    }
+    else
+    {
+        if (row[1] == 0)
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis8[newCol];
+                }
+                else
+                {
+                    new = yAxis9[newCol];          
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis10[newCol];
+                }
+                else
+                {
+                    new = yAxis11[newCol];           
+                }
+            }
+        }
+        else
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis12[newCol];
+                }
+                else
+                {
+                    new = yAxis13[newCol];          
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis14[newCol];
+                }
+                else
+                {
+                    new = yAxis15[newCol];          
+                }
+            }
+        }
+    }
+
+    printf("ss %s", new);
+    char* newChar = *new;
+    return *newChar;
+}
+
+unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size) 
+{
+  char* newBlock = "";
+
+  for(int i = 0; i < strlen(block); i++)
+  {
+    int row[4] = {0, 0, 0, 0};
+    int col[4] = {0, 0, 0, 0};
+
+    for(int j = 0; j < 8; j++)
+    {
+        if (j < 4)
+        {            
+            row[j] = (0 != (block[i/8] & 1 << (~j&7)));
+        }
+        else
+        {
+            col[j - 4] = (0 != (block[i/8] & 1 << (~j&7)));
+        }
+    }
+
+    newBlock[i] = hexChecker(row, col);
+    printf("%s", newBlock);
+  }
+
+  return *newBlock;
+}
+
 unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;

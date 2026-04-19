@@ -23,10 +23,275 @@ void cTypTest()
   printf("testWorks");
 }
 
+char yAxis0[][2] = {"63", "ca", "b7", "04", "09", "53", "d0", "51", "cd" ,"60" ,"e0", "e7", "ba", "70", "e1", "8c"};
+char yAxis1[][2] = {"7c", "82", "fd", "c7", "83", "d1", "ef", "a3", "0c" ,"81" ,"32", "c8", "78", "3e", "f8", "a1"};
+char yAxis2[][2] = {"77", "c9", "93", "23", "2c", "00", "aa", "40", "13" ,"4f" ,"3a", "37", "25", "b5", "98", "89"};
+char yAxis3[][2] = {"7b", "7d", "26", "c3", "1a", "ed", "fb", "8f", "ec" ,"dc" ,"0a", "6d", "2e", "66", "11", "0d"};
+char yAxis4[][2] = {"f2", "fa", "36", "18", "1b", "20", "43", "92", "5f" ,"22" ,"49", "8d", "1c", "48", "69", "bf"};
+char yAxis5[][2] = {"6b", "59", "3f", "96", "6e", "fc", "4d", "9d", "97" ,"2a" ,"06", "d5", "a6", "03", "d9", "e6"};
+char yAxis6[][2] = {"6f", "47", "f7", "05", "5a", "b1", "33", "38", "44" ,"90" ,"24", "4e", "b4", "f6", "8e", "42"};
+char yAxis7[][2] = {"c5", "f0", "cc", "9a", "a0", "5b", "85", "f5", "17" ,"88" ,"5c", "a9", "c6", "0e", "94", "68"};
+char yAxis8[][2] = {"30", "ad", "34", "07", "52", "6a", "45", "bc", "c4" ,"46" ,"c2", "6c", "e8", "61", "9b", "41"};
+char yAxis9[][2] = {"01", "d4", "a5", "12", "3b", "cb", "f9", "b6", "a7" ,"ee" ,"d3", "56", "dd", "35", "1e", "99"};
+char yAxis10[][2] = {"67", "a2", "e5", "80", "d6", "be", "02", "da", "7e" ,"b8" ,"ac", "f4", "74", "57", "87", "2d"};
+char yAxis11[][2] = {"2b", "af", "f1", "e2", "b3", "39", "7f", "21", "3d" ,"14" ,"62", "ea", "1f", "b9", "e9", "0f"};
+char yAxis12[][2] = {"fe", "9c", "71", "eb", "29", "4a", "50", "10", "64" ,"de" ,"91", "65", "4b", "86", "ce", "b0"};
+char yAxis13[][2] = {"d7", "a4", "d8", "27", "e3", "4c", "3c", "ff", "5d" ,"5e" ,"95", "7a", "bd", "c1", "55", "54"};
+char yAxis14[][2] = {"ab", "72", "31", "b2", "2f", "58", "9f", "f3", "19" ,"0b" ,"e4", "ae", "8b", "1d", "28", "bb"};
+char yAxis15[][2] = {"76", "c0", "15", "75", "84", "cf", "a8", "d2", "73" ,"db" ,"79", "08", "8a", "9e", "df", "16"};
+
+
 // Operations used when encrypting a block
+unsigned char hexChecker(int* row, int* col)
+{
+    int newCol = *"";
+    char* new = "";
+
+    if (col[0] == 0)
+    {
+        if (col[1] == 0)
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 0;
+                }
+                else
+                {
+                    newCol = 1;            
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 2;
+                }
+                else
+                {
+                    newCol = 3;
+                }
+            }
+        }
+        else
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 4;
+                }
+                else
+                {
+                    newCol = 5;
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 6;
+                }
+                else
+                {
+                    newCol = 7;            
+                }          
+            }
+        }
+    }
+    else
+    {
+        if (col[1] == 0)
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 8;
+                }
+                else
+                {
+                    newCol = 9;            
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 10;
+                }
+                else
+                {
+                    newCol = 11;            
+                }
+            }
+        }
+        else
+        {
+            if (col[2] == 0)
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 12;
+                }
+                else
+                {
+                    newCol = 13;            
+                }
+            }
+            else
+            {
+                if (col[3] == 0)
+                {
+                    newCol = 14;
+                }
+                else
+                {
+                    newCol = 15;            
+                }
+            }
+        }
+    }
+
+    if (row[0] == 0)
+    {
+        if (row[1] == 0)
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis0[newCol];
+                }
+                else
+                {
+                    new = yAxis1[newCol];           
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis2[newCol];
+                }
+                else
+                {
+                    new = yAxis3[newCol];
+                }
+            }
+        }
+        else
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis4[newCol];
+                }
+                else
+                {
+                    new = yAxis5[newCol];
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis6[newCol];
+                }
+                else
+                {
+                    new = yAxis7[newCol];        
+                }          
+            }
+        }
+    }
+    else
+    {
+        if (row[1] == 0)
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis8[newCol];
+                }
+                else
+                {
+                    new = yAxis9[newCol];          
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis10[newCol];
+                }
+                else
+                {
+                    new = yAxis11[newCol];           
+                }
+            }
+        }
+        else
+        {
+            if (row[2] == 0)
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis12[newCol];
+                }
+                else
+                {
+                    new = yAxis13[newCol];          
+                }
+            }
+            else
+            {
+                if (row[3] == 0)
+                {
+                    new = yAxis14[newCol];
+                }
+                else
+                {
+                    new = yAxis15[newCol];          
+                }
+            }
+        }
+    }
+
+    printf("ss %s", new);
+    char* newChar = *new;
+    return *newChar;
+}
+
 unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size) 
 {
-  return *block;
+  char* newBlock = "";
+
+  for(int i = 0; i < strlen(block); i++)
+  {
+    int row[4] = {0, 0, 0, 0};
+    int col[4] = {0, 0, 0, 0};
+
+    for(int j = 0; j < 8; j++)
+    {
+        if (j < 4)
+        {            
+            row[j] = (0 != (block[i/8] & 1 << (~j&7)));
+        }
+        else
+        {
+            col[j - 4] = (0 != (block[i/8] & 1 << (~j&7)));
+        }
+    }
+
+    newBlock[i] = hexChecker(row, col);
+    printf("%s", newBlock);
+  }
+
+  return *newBlock;
 }
 
 unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size) 

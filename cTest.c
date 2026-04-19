@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stddef.h>
 
+//the Sbox columns
 char yAxis0[][2] = {"63", "ca", "b7", "04", "09", "53", "d0", "51", "cd" ,"60" ,"e0", "e7", "ba", "70", "e1", "8c"};
 char yAxis1[][2] = {"7c", "82", "fd", "c7", "83", "d1", "ef", "a3", "0c" ,"81" ,"32", "c8", "78", "3e", "f8", "a1"};
 char yAxis2[][2] = {"77", "c9", "93", "23", "2c", "00", "aa", "40", "13" ,"4f" ,"3a", "37", "25", "b5", "98", "89"};
@@ -21,13 +22,15 @@ char yAxis13[][2] = {"d7", "a4", "d8", "27", "e3", "4c", "3c", "ff", "5d" ,"5e" 
 char yAxis14[][2] = {"ab", "72", "31", "b2", "2f", "58", "9f", "f3", "19" ,"0b" ,"e4", "ae", "8b", "1d", "28", "bb"};
 char yAxis15[][2] = {"76", "c0", "15", "75", "84", "cf", "a8", "d2", "73" ,"db" ,"79", "08", "8a", "9e", "df", "16"};
 
+//the mix column grid box
 char* mixCol[][2] = {"02", "03", "01", "01", "01", "02", "03", "01", "01", "01", "02", "03", "03", "01", "01", "02"};
 
+//checks the chipers char position with in the sbox
 unsigned char hexChecker(int* row, int* col)
 {
     int newCol = *"";
     char* new = "";
-
+    
     if (col[0] == 0)
     {
         if (col[1] == 0)
@@ -247,23 +250,28 @@ unsigned char hexChecker(int* row, int* col)
     return *newChar;
 }
 
+//runs the subistutes the bytes function
 unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
 
+  //loops through all characters of the plain text
   for(int i = 0; i < strlen(block); i++)
   {
     int row[4] = {0, 0, 0, 0};
     int col[4] = {0, 0, 0, 0};
 
+    //loops through all eight bits
     for(int j = 0; j < 8; j++)
     {
+        //gets the row axis
         if (j < 4)
         {            
             row[j] = (0 != (block[i/8] & 1 << (~j&7)));
         }
         else
         {
+            //gets the col axis
             col[j - 4] = (0 != (block[i/8] & 1 << (~j&7)));
         }
     }
@@ -275,6 +283,7 @@ unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size)
   return *newBlock;
 }
 
+// unsubsitutes the bytes
 unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size) 
 {
   int row[4] = {0, 0, 0, 0};
@@ -284,6 +293,7 @@ unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size
 
   for(int i = 0; i < strlen(block) / 2; i++)
   {
+    //reverse the s box axises
     for(int j = 0; j < 16; j++)
     {
         coly = j;
@@ -434,6 +444,7 @@ unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size
         }
     }
 
+    //sets the old col axis
     if (coly == 0)
     {
         col[0] = 0;
@@ -578,6 +589,8 @@ unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size
 
         break;
     }
+
+    //creates the old bytes
     char new = row[0]&row[1]&row[2]&row[3]&col[0]&col[1]&col[2]&col[3];
     printf("%s", new);
     newBlock[i] = new;
@@ -585,6 +598,7 @@ unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size
   return *newBlock;
 }
 
+// row shifter
 unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
@@ -714,6 +728,7 @@ unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size)
   return *block;
 }
 
+//shift back
 unsigned char invert_shift_rows(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
@@ -843,6 +858,7 @@ unsigned char invert_shift_rows(unsigned char* block, aes_block_size_t block_siz
   return *block;
 }
 
+//column mixer
 unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
@@ -852,6 +868,8 @@ unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size)
     char temp[16];
     char* mixTemp = mixCol[i][0];
     char* mixTemp2 = mixCol[i][1];
+
+    //times the bytes by the mix column grid box
     for(int j = 0; j < 8; j++)
     {
         temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) * (0 != (mixTemp[0/8] & 1 << (~j&7)));
@@ -863,6 +881,7 @@ unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size)
   return *newBlock;
 }
 
+//un column mixer
 unsigned char invert_mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
@@ -871,17 +890,39 @@ unsigned char invert_mix_columns(unsigned char* block, aes_block_size_t block_si
     char temp[16];
     char* mixTemp = mixCol[i][0];
     char* mixTemp2 = mixCol[i][1];
-        for(int j = 0; j < 15; j++)
-        {
-            temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) / (0 != (mixTemp[0/8] & 1 << (~j&7)));
-            temp[j +8] = (0 != (block[((i * 2) + 1)/8] & 1 << (~j&7))) / (0 != (mixTemp2[0/8] & 1 << (~j&7)));
-        }
-        newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
+
+    //reverts the mix column grid multipler
+    for(int j = 0; j < 15; j++)
+    {
+        temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) / (0 != (mixTemp[0/8] & 1 << (~j&7)));
+        temp[j +8] = (0 != (block[((i * 2) + 1)/8] & 1 << (~j&7))) / (0 != (mixTemp2[0/8] & 1 << (~j&7)));
+    }
+        
+    newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
   }
   
   return *newBlock;
 }
 
+// adds the key to the block
+unsigned char add_round_key(unsigned char* block, unsigned char* round_key, aes_block_size_t block_size) 
+{
+  char* newBlock = "";
+  for(int i = 0; i < strlen(block); i++)
+  {
+    char* temp = "";
+    for(int j = 0; j < 15; j++)
+    {
+        temp[i] = (0 != (block[i/8] & 1 << (~j&7))) + (0 != (round_key[i/8] & 1 << (~j&7)));
+    }
+            
+        newBlock[i] = temp;
+  }
+  
+  return *newBlock;
+}
+
+//runs all the encrption
 unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;
@@ -890,9 +931,10 @@ unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_s
     sizeof(unsigned char) * block_size
   );
 
+  //checks the loop amount
   if (block_size == 16)
   {
-    loopAmount = 1;
+    loopAmount = 10;
   }  
   else if (block_size == 32)
   {
@@ -909,26 +951,27 @@ unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_s
     return 0;
   }
 
+  //runs the aes encrypt loop
   unsigned char* cipherText = plaintext;
 
-  //cipherText = add_round_key(cipherText, key, block_size);
+  cipherText = add_round_key(cipherText, key, block_size);
 
   for (int i = 0; i < loopAmount - 1; i++) 
   {
     *cipherText = sub_bytes(cipherText, block_size);
     *cipherText = shift_rows(cipherText, block_size);
-    //*cipherText = mix_columns(cipherText, block_size);
-    //*cipherText = add_round_key(cipherText, key, block_size);
+    *cipherText = mix_columns(cipherText, block_size);
+    *cipherText = add_round_key(cipherText, key, block_size);
   }
 
   *cipherText = sub_bytes(cipherText, block_size);
   *cipherText = shift_rows(cipherText, block_size);
-  //*cipherText = add_round_key(cipherText, key, block_size);
+  *cipherText = add_round_key(cipherText, key, block_size);
 
   return output;
 }
 
-
+//decrpt function
 unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;
@@ -937,6 +980,7 @@ unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, 
     sizeof(unsigned char) * block_size
   );
 
+  //gets the aes size
   if (block_size == 16)
   {
     loopAmount = 10;
@@ -955,26 +999,28 @@ unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, 
     return 0;
   }
 
+  //runs the aes decrypt loop
   printf("%d", sizeof(ciphertext));
   unsigned char* plaintext = ciphertext;
 
-  //*plaintext = add_round_key(plaintext, key, block_size);
+  *plaintext = add_round_key(plaintext, key, block_size);
   *plaintext = invert_shift_rows(plaintext, block_size);
   *plaintext = invert_sub_bytes(plaintext, block_size);
 
   for (int i = 0; i < loopAmount - 1; i++) 
   {
-    //*plaintext = add_round_key(plaintext, key, block_size);
-    //*plaintext = invert_mix_columns(plaintext, block_size);
+    *plaintext = add_round_key(plaintext, key, block_size);
+    *plaintext = invert_mix_columns(plaintext, block_size);
     *plaintext = invert_shift_rows(plaintext, block_size);
     *plaintext = invert_sub_bytes(plaintext, block_size);
   }
 
-  //*plaintext = add_round_key(plaintext, key, block_size);
+  *plaintext = add_round_key(plaintext, key, block_size);
 
   return output;
 }
 
+//the tests main
 int main()
 {
     unsigned char cip = encrypt("are", "sfdg", 16);

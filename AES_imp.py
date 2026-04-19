@@ -8,10 +8,12 @@ import ctypes
 import os
 import sys
 
+#loads the ctypes
 #lib_path = os.path.abspath("rijndaelTest.so")
 lib_path = os.path.abspath("rijndael.so")
 rijn = ctypes.CDLL(lib_path)
 
+#test the ctype connection
 rijn.cTypTest()
 
 # Create rijndael.so by using the terminal code to make 32 file
@@ -19,6 +21,7 @@ rijn.cTypTest()
 
 blockSize = 0
 
+#asks the user for the encryption type
 print(" ")
 encryptionType = input("Which bit do you want to encrypt with A : 128, B : 256 or C : 512 ")
 print(" ")
@@ -35,16 +38,20 @@ elif encryptionType == "512" or encryptionType == "C" or encryptionType == "C" o
 else:
     sys.exit(f"{encryptionType} is not a valid Ecryption Bid")
 
+#asks for the key and the phrase
 print(" ")
 phaseBeingEnc = input("What do you want to encrypt ")
 print(" ")
 phaseKey = input("What key do you want to use (must be the same length as what you encrypted) ")
 print(" ")
 
+#checks that the key and phrase are the same length
 if len(phaseKey) != len(phaseBeingEnc):
     sys.exit(f"{phaseBeingEnc} is {len(phaseBeingEnc)} digits while {phaseKey} is {len(phaseKey)}, they need to be the same")
 
+#runs the encrypt cod
 print(" ")
 rijn.aes_encrypt_block(phaseBeingEnc, phaseKey, blockSize)
 print(" ")
-#rijn.aes_decrypt_block(phaseBeingEnc, phaseKey, blockSize)
+#runs the decrpt code
+rijn.aes_decrypt_block(phaseBeingEnc, phaseKey, blockSize)

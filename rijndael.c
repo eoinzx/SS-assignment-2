@@ -1,6 +1,9 @@
 /* Eoin Laffan Downes
  * A00049183
- * TODO: a brief description of this code.
+ * This code stores and runs the function to encrypt and dycrypt via
+ * the aes (Rijndael) methodolgy by being link through python with the
+ * AES_imp.py file
+ * cTest.c also has a pure c code version of these functions
  */
 
 #include "rijndael.h"
@@ -18,11 +21,13 @@ char* message(char n)
   return output;
 }
 
+//test if c types are working
 void cTypTest()
 {
   printf("testWorks");
 }
 
+//Sbox columns
 char yAxis0[][2] = {"63", "ca", "b7", "04", "09", "53", "d0", "51", "cd" ,"60" ,"e0", "e7", "ba", "70", "e1", "8c"};
 char yAxis1[][2] = {"7c", "82", "fd", "c7", "83", "d1", "ef", "a3", "0c" ,"81" ,"32", "c8", "78", "3e", "f8", "a1"};
 char yAxis2[][2] = {"77", "c9", "93", "23", "2c", "00", "aa", "40", "13" ,"4f" ,"3a", "37", "25", "b5", "98", "89"};
@@ -267,6 +272,7 @@ unsigned char hexChecker(int* row, int* col)
     return *newChar;
 }
 
+//sub bytes
 unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
@@ -295,10 +301,12 @@ unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size)
   return *newBlock;
 }
 
+// shifts rows
 unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
 
+  //shifts rows based on the four by four grid
   for(int i = 0; i < strlen(block) / 4; i++)
   {
     for(int j = 0; j < 16; j++)
@@ -424,6 +432,7 @@ unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size)
   return *block;
 }
 
+// mixes the columns
 unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
@@ -441,25 +450,6 @@ unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size)
    
     newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
   }
-  return *newBlock;
-}
-
-unsigned char invert_mix_columns(unsigned char* block, aes_block_size_t block_size) 
-{
-  char* newBlock = "";
-  for(int i = 0; i < strlen(block) * 2; i++)
-  {
-    char temp[16];
-    char* mixTemp = mixCol[i][0];
-    char* mixTemp2 = mixCol[i][1];
-        for(int j = 0; j < 15; j++)
-        {
-            temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) / (0 != (mixTemp[0/8] & 1 << (~j&7)));
-            temp[j +8] = (0 != (block[((i * 2) + 1)/8] & 1 << (~j&7))) / (0 != (mixTemp2[0/8] & 1 << (~j&7)));
-        }
-        newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
-  }
-  
   return *newBlock;
 }
 
@@ -774,12 +764,15 @@ unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size
   return *newBlock;
 }
 
+//unshifts the rows
 unsigned char invert_shift_rows(unsigned char* block, aes_block_size_t block_size) 
 {
   char* newBlock = "";
 
+  //get block character length then divides by the for grid spaces and loops
   for(int i = 0; i < strlen(block) / 4; i++)
   {
+    //loops through the 4 x 4 grid
     for(int j = 0; j < 16; j++)
     {
         char temp = block[i]&block[i+1];
@@ -903,19 +896,50 @@ unsigned char invert_shift_rows(unsigned char* block, aes_block_size_t block_siz
   return *block;
 }
 
+//un column mixer
 unsigned char invert_mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
-  return *block;
+  char* newBlock = "";
+  for(int i = 0; i < strlen(block) * 2; i++)
+  {
+    char temp[16];
+    char* mixTemp = mixCol[i][0];
+    char* mixTemp2 = mixCol[i][1];
+
+    //reverts the mix column grid multipler
+    for(int j = 0; j < 15; j++)
+    {
+        temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) / (0 != (mixTemp[0/8] & 1 << (~j&7)));
+        temp[j +8] = (0 != (block[((i * 2) + 1)/8] & 1 << (~j&7))) / (0 != (mixTemp2[0/8] & 1 << (~j&7)));
+    }
+        
+    newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
+  }
+  
+  return *newBlock;
 }
 
 /*
  * This operation is shared between encryption and decryption
  */
+
+ //add the round key on the byte level
 unsigned char add_round_key(unsigned char* block, unsigned char* round_key, aes_block_size_t block_size) 
 {
-  return *block;
+  char* newBlock = "";
+  for(int i = 0; i < strlen(block); i++)
+  {
+    char* temp = "";
+    for(int j = 0; j < 15; j++)
+    {
+        temp[i] = (0 != (block[i/8] & 1 << (~j&7))) + (0 != (round_key[i/8] & 1 << (~j&7)));
+    }
+            
+        newBlock[i] = temp;
+  }
+  
+  return *newBlock;
 }
-
 /*
  * This function should expand the round key. Given an input,
  * which is a single 128-bit key, it should return a 176-byte
@@ -928,9 +952,11 @@ unsigned char* expand_key(unsigned char* cipher_key, aes_block_size_t block_size
 }
 
 /* header is
- * rijndael
+ * rijndael.h
+ * excute through AES_imp.py
 */
 
+//the overal encryptyion function
 unsigned char* aes_encrypt_block(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;
@@ -939,9 +965,10 @@ unsigned char* aes_encrypt_block(unsigned char* plaintext, unsigned char* key, a
     sizeof(unsigned char) * block_size
   );
 
+  //loop size
   if (block_size == 16)
   {
-    loopAmount = 1;
+    loopAmount = 10;
   }  
   else if (block_size == 32)
   {
@@ -958,25 +985,27 @@ unsigned char* aes_encrypt_block(unsigned char* plaintext, unsigned char* key, a
     return 0;
   }
 
+  //encrypt loop
   unsigned char* cipherText = plaintext;
 
-  //cipherText = add_round_key(cipherText, key, block_size);
+  cipherText = add_round_key(cipherText, key, block_size);
 
   for (int i = 0; i < loopAmount - 1; i++) 
   {
     *cipherText = sub_bytes(cipherText, block_size);
     *cipherText = shift_rows(cipherText, block_size);
-    //*cipherText = mix_columns(cipherText, block_size);
-    //*cipherText = add_round_key(cipherText, key, block_size);
+    *cipherText = mix_columns(cipherText, block_size);
+    *cipherText = add_round_key(cipherText, key, block_size);
   }
 
   *cipherText = sub_bytes(cipherText, block_size);
   *cipherText = shift_rows(cipherText, block_size);
-  //*cipherText = add_round_key(cipherText, key, block_size);
+  *cipherText = add_round_key(cipherText, key, block_size);
 
   return output;
 }
 
+//decrypt block
 unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;
@@ -985,6 +1014,7 @@ unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, 
     sizeof(unsigned char) * block_size
   );
 
+  //loop size
   if (block_size == 16)
   {
     loopAmount = 10;
@@ -1003,22 +1033,23 @@ unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, 
     return 0;
   }
 
+  //decrypt loop
   printf("%d", sizeof(ciphertext));
   unsigned char* plaintext = ciphertext;
 
-  //*plaintext = add_round_key(plaintext, key, block_size);
+  *plaintext = add_round_key(plaintext, key, block_size);
   *plaintext = invert_shift_rows(plaintext, block_size);
   *plaintext = invert_sub_bytes(plaintext, block_size);
 
   for (int i = 0; i < loopAmount - 1; i++) 
   {
-    //*plaintext = add_round_key(plaintext, key, block_size);
-    //*plaintext = invert_mix_columns(plaintext, block_size);
+    *plaintext = add_round_key(plaintext, key, block_size);
+    *plaintext = invert_mix_columns(plaintext, block_size);
     *plaintext = invert_shift_rows(plaintext, block_size);
     *plaintext = invert_sub_bytes(plaintext, block_size);
   }
 
-  //*plaintext = add_round_key(plaintext, key, block_size);
+  *plaintext = add_round_key(plaintext, key, block_size);
 
   return output;
 }

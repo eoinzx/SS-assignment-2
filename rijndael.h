@@ -1,6 +1,6 @@
 /* Eoin Laffan Downes
  * A00049183
- * TODO: a brief description of this code.
+ * create variable types for the rihndael encryption and decryption
  */
 
 #ifndef RIJNDAEL_H

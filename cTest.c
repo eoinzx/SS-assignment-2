@@ -306,13 +306,13 @@ unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_s
 
   for (int i = 0; i < loopAmount - 1; i++) 
   {
-    //*cipherText = sub_bytes(cipherText, block_size);
+    *cipherText = sub_bytes(cipherText, block_size);
     //*cipherText = shift_rows(cipherText, block_size);
     //*cipherText = mix_columns(cipherText, block_size);
     //*cipherText = add_round_key(cipherText, key, block_size);
   }
 
-  //*cipherText = sub_bytes(cipherText, block_size);
+  *cipherText = sub_bytes(cipherText, block_size);
   //*cipherText = shift_rows(cipherText, block_size);
   //*cipherText = add_round_key(cipherText, key, block_size);
 

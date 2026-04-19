@@ -273,6 +273,316 @@ unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size)
   return *newBlock;
 }
 
+unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size) 
+{
+  int row[4] = {0, 0, 0, 0};
+  int col[4] = {0, 0, 0, 0};
+  int coly = 0;
+  char* newBlock = "";
+
+  for(int i = 0; i < strlen(block) / 2; i++)
+  {
+    for(int j = 0; j < 16; j++)
+    {
+        coly = j;
+        char temp = block[i]&block[i+1];
+        if (temp == yAxis0[j])
+        {
+            row[0] = 0;
+            row[1] = 0;
+            row[2] = 0;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis1[j])
+        {
+            row[0] = 0;
+            row[1] = 0;
+            row[2] = 0;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis2[j])
+        {
+            row[0] = 0;
+            row[1] = 0;
+            row[2] = 1;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis3[j])
+        {
+            row[0] = 0;
+            row[1] = 0;
+            row[2] = 1;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis4[j])
+        {
+            row[0] = 0;
+            row[1] = 1;
+            row[2] = 0;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis5[j])
+        {
+            row[0] = 0;
+            row[1] = 1;
+            row[2] = 0;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis6[j])
+        {
+            row[0] = 0;
+            row[1] = 1;
+            row[2] = 1;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis7[j])
+        {
+            row[0] = 0;
+            row[1] = 1;
+            row[2] = 1;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis8[j])
+        {
+            row[0] = 1;
+            row[1] = 0;
+            row[2] = 0;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis9[j])
+        {
+            row[0] = 1;
+            row[1] = 0;
+            row[2] = 0;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis10[j])
+        {
+            row[0] = 1;
+            row[1] = 0;
+            row[2] = 1;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis11[j])
+        {
+            row[0] = 1;
+            row[1] = 0;
+            row[2] = 1;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis12[j])
+        {
+            row[0] = 1;
+            row[1] = 1;
+            row[2] = 0;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis13[j])
+        {
+            row[0] = 1;
+            row[1] = 1;
+            row[2] = 0;
+            row[3] = 1;
+
+            break;
+        }
+        else if (temp == yAxis14[j])
+        {
+            row[0] = 1;
+            row[1] = 1;
+            row[2] = 1;
+            row[3] = 0;
+
+            break;
+        }
+        else if (temp == yAxis15[j])
+        {
+            row[0] = 1;
+            row[1] = 1;
+            row[2] = 1;
+            row[3] = 1;
+
+            break;
+        }
+    }
+
+    if (coly == 0)
+    {
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 1)
+    {
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 2)
+    {
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 1;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 3)
+    {
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 1;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 4)
+    {
+        col[0] = 0;
+        col[1] = 1;
+        col[2] = 0;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 5)
+    {
+        col[0] = 0;
+        col[1] = 1;
+        col[2] = 0;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 6)
+    {
+        col[0] = 0;
+        col[1] = 1;
+        col[2] = 1;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 7)
+    {
+        col[0] = 0;
+        col[1] = 1;
+        col[2] = 1;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 8)
+    {
+        col[0] = 1;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 9)
+    {
+        col[0] = 1;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 10)
+    {
+        col[0] = 1;
+        col[1] = 0;
+        col[2] = 1;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 11)
+    {
+        col[0] = 1;
+        col[1] = 0;
+        col[2] = 1;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 12)
+    {
+        col[0] = 1;
+        col[1] = 1;
+        col[2] = 0;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 13)
+    {
+        col[0] = 1;
+        col[1] = 1;
+        col[2] = 0;
+        col[3] = 1;
+
+        break;
+    }
+    else if (coly == 14)
+    {
+        col[0] = 1;
+        col[1] = 1;
+        col[2] = 1;
+        col[3] = 0;
+
+        break;
+    }
+    else if (coly == 15)
+    {
+        col[0] = 1;
+        col[1] = 1;
+        col[2] = 1;
+        col[3] = 1;
+
+        break;
+    }
+    char new = row[0]&row[1]&row[2]&row[3]&col[0]&col[1]&col[2]&col[3];
+    printf("%s", new);
+    newBlock[i] = new;
+  }
+  return *newBlock;
+}
+
 unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;
@@ -315,6 +625,53 @@ unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_s
   *cipherText = sub_bytes(cipherText, block_size);
   //*cipherText = shift_rows(cipherText, block_size);
   //*cipherText = add_round_key(cipherText, key, block_size);
+
+  return output;
+}
+
+
+unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, aes_block_size_t block_size) 
+{
+  int loopAmount = 0;
+  unsigned char* output = (unsigned char*) malloc
+  (
+    sizeof(unsigned char) * block_size
+  );
+
+  if (block_size == 16)
+  {
+    loopAmount = 10;
+  }  
+  else if (block_size == 32)
+  {
+    loopAmount = 14;
+  }
+  else if (block_size == 64)
+  {
+    loopAmount = 22;
+  }
+  else
+  {
+    printf("Not a valid encryption type eee");
+    return 0;
+  }
+
+  printf("%d", sizeof(ciphertext));
+  unsigned char* plaintext = ciphertext;
+
+  //*plaintext = add_round_key(plaintext, key, block_size);
+  //*plaintext = invert_shift_rows(plaintext, block_size);
+  *plaintext = invert_sub_bytes(plaintext, block_size);
+
+  for (int i = 0; i < loopAmount - 1; i++) 
+  {
+    //*plaintext = add_round_key(plaintext, key, block_size);
+    //*plaintext = invert_mix_columns(plaintext, block_size);
+    //*plaintext = invert_shift_rows(plaintext, block_size);
+    *plaintext = invert_sub_bytes(plaintext, block_size);
+  }
+
+  //*plaintext = add_round_key(plaintext, key, block_size);
 
   return output;
 }

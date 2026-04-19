@@ -40,6 +40,7 @@ char yAxis13[][2] = {"d7", "a4", "d8", "27", "e3", "4c", "3c", "ff", "5d" ,"5e" 
 char yAxis14[][2] = {"ab", "72", "31", "b2", "2f", "58", "9f", "f3", "19" ,"0b" ,"e4", "ae", "8b", "1d", "28", "bb"};
 char yAxis15[][2] = {"76", "c0", "15", "75", "84", "cf", "a8", "d2", "73" ,"db" ,"79", "08", "8a", "9e", "df", "16"};
 
+char* mixCol[][2] = {"02", "03", "01", "01", "01", "02", "03", "01", "01", "01", "02", "03", "03", "01", "01", "02"};
 
 // Operations used when encrypting a block
 unsigned char hexChecker(int* row, int* col)
@@ -425,8 +426,24 @@ unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size)
 
 unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
-  return *block;
+  char* newBlock = "";
+
+  for(int i = 0; i < strlen(block) / 2; i++)
+  {
+    char temp[16];
+    char* mixTemp = mixCol[i][0];
+    char* mixTemp2 = mixCol[i][1];
+    for(int j = 0; j < 8; j++)
+    {
+        temp[j] = (0 != (block[(i * 2)/8] & 1 << (~j&7))) * (0 != (mixTemp[0/8] & 1 << (~j&7)));
+        temp[j +8] = (0 != (block[((i * 2) + 1)/8] & 1 << (~j&7))) * (0 != (mixTemp2[0/8] & 1 << (~j&7)));
+    }
+   
+    newBlock[i] = temp[0]&temp[1]&temp[2]&temp[3]&temp[4]&temp[5]&temp[6]&temp[7]&temp[8]&temp[9]&temp[10]&temp[11]&temp[12]&temp[13]&temp[14]&temp[15];
+  }
+  return *newBlock;
 }
+
 
 // Operations used when decrypting a block
 unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size) 

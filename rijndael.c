@@ -4,55 +4,10 @@
  */
 
 #include "rijndael.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-size_t block_size_to_bytes(aes_block_size_t block_size) 
-{
-  switch (block_size) 
-  {
-    case AES_BLOCK_128:
-      return 16;
-      
-    case AES_BLOCK_256:
-      return 32;
-
-    case AES_BLOCK_512:
-      return 64;
-
-    default:
-      fprintf(stderr, "Invalid block size %d\n", block_size);
-      exit(1);
-  }
-}
-
-unsigned char block_access(unsigned char* block, size_t row, size_t col, aes_block_size_t block_size) 
-{
-  int row_len;
-
-  switch (block_size) 
-  {
-    case AES_BLOCK_128:
-      row_len = 4;
-      break;
-
-    case AES_BLOCK_256:
-      row_len = 8;
-      break;
-
-    case AES_BLOCK_512:
-      row_len = 16;
-      break;
-
-    default:
-      fprintf(stderr, "Invalid block size for block_access: %d\n", block_size);
-      exit(1);
-  }
-
-  return block[(row * row_len) + col];
-}
+#include <stddef.h>
 
 char* message(char n) 
 {
@@ -63,44 +18,49 @@ char* message(char n)
   return output;
 }
 
+void cTypTest()
+{
+  printf("testWorks");
+}
+
 // Operations used when encrypting a block
-void sub_bytes(unsigned char* block, aes_block_size_t block_size) 
+unsigned char sub_bytes(unsigned char* block, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
-void shift_rows(unsigned char* block, aes_block_size_t block_size) 
+unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
-void mix_columns(unsigned char* block, aes_block_size_t block_size) 
+unsigned char mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
 // Operations used when decrypting a block
-void invert_sub_bytes(unsigned char* block, aes_block_size_t block_size) 
+unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
-void invert_shift_rows(unsigned char* block, aes_block_size_t block_size) 
+unsigned char invert_shift_rows(unsigned char* block, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
-void invert_mix_columns(unsigned char* block, aes_block_size_t block_size) 
+unsigned char invert_mix_columns(unsigned char* block, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
 /*
  * This operation is shared between encryption and decryption
  */
-void add_round_key(unsigned char* block, unsigned char* round_key, aes_block_size_t block_size) 
+unsigned char add_round_key(unsigned char* block, unsigned char* round_key, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  return *block;
 }
 
 /*
@@ -111,31 +71,30 @@ void add_round_key(unsigned char* block, unsigned char* round_key, aes_block_siz
 
 unsigned char* expand_key(unsigned char* cipher_key, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
-  return 0;
+  return *cipher_key;
 }
 
-/*
- * The implementations of the functions declared in the
- * header file should go here
- */
+/* header is
+ * rijndael
+*/
 
 unsigned char* aes_encrypt_block(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
   unsigned char* output = (unsigned char*) malloc
-    (
-      sizeof(unsigned char) * block_size_to_bytes(block_size)
-    );
+  (
+    sizeof(unsigned char) * block_size
+  );
+
   return output;
 }
 
 unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, aes_block_size_t block_size) 
 {
-  // TODO: Implement me!
+  
   unsigned char* output = (unsigned char*) malloc
-    (
-      sizeof(unsigned char) * block_size_to_bytes(block_size)
-    );
+  (
+    sizeof(unsigned char) * block_size
+  );
+
   return output;
 }

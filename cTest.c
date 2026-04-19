@@ -583,6 +583,264 @@ unsigned char invert_sub_bytes(unsigned char* block, aes_block_size_t block_size
   return *newBlock;
 }
 
+unsigned char shift_rows(unsigned char* block, aes_block_size_t block_size) 
+{
+  char* newBlock = "";
+
+  for(int i = 0; i < strlen(block) / 4; i++)
+  {
+    for(int j = 0; j < 16; j++)
+    {
+        char temp = block[i]&block[i+1];
+        if (temp == yAxis0[j])
+        {
+            newBlock[i + 1] = yAxis15[j];
+            newBlock[i + 2] = yAxis14[j];
+            newBlock[i + 3] = yAxis13[j];
+            break;
+        }
+        else if (temp == yAxis1[j])
+        {
+            newBlock[i + 1] = yAxis0[j];
+            newBlock[i + 2] = yAxis15[j];
+            newBlock[i + 3] = yAxis14[j];
+            break;
+        }
+        else if (temp == yAxis2[j])
+        {
+            newBlock[i + 1] = yAxis1[j];
+            newBlock[i + 2] = yAxis0[j];
+            newBlock[i + 3] = yAxis15[j];
+            break;
+        }
+        else if (temp == yAxis3[j])
+        {
+            newBlock[i + 1] = yAxis2[j];
+            newBlock[i + 2] = yAxis1[j];
+            newBlock[i + 3] = yAxis0[j];
+            break;
+        }
+        else if (temp == yAxis4[j])
+        {
+            newBlock[i + 1] = yAxis3[j];
+            newBlock[i + 2] = yAxis2[j];
+            newBlock[i + 3] = yAxis1[j];
+            break;
+        }
+        else if (temp == yAxis5[j])
+        {
+            newBlock[i + 1] = yAxis4[j];
+            newBlock[i + 2] = yAxis3[j];
+            newBlock[i + 3] = yAxis2[j];
+            break;
+        }
+        else if (temp == yAxis6[j])
+        {
+            newBlock[i + 1] = yAxis5[j];
+            newBlock[i + 2] = yAxis4[j];
+            newBlock[i + 3] = yAxis3[j];
+            break;
+        }
+        else if (temp == yAxis7[j])
+        {
+            newBlock[i + 1] = yAxis6[j];
+            newBlock[i + 2] = yAxis5[j];
+            newBlock[i + 3] = yAxis4[j];
+            break;
+        }
+        else if (temp == yAxis8[j])
+        {
+            newBlock[i + 1] = yAxis7[j];
+            newBlock[i + 2] = yAxis6[j];
+            newBlock[i + 3] = yAxis5[j];
+            break;
+        }
+        else if (temp == yAxis9[j])
+        {
+            newBlock[i + 1] = yAxis8[j];
+            newBlock[i + 2] = yAxis7[j];
+            newBlock[i + 3] = yAxis6[j];
+            break;
+        }
+        else if (temp == yAxis10[j])
+        {
+            newBlock[i + 1] = yAxis9[j];
+            newBlock[i + 2] = yAxis8[j];
+            newBlock[i + 3] = yAxis7[j];
+            break;
+        }
+        else if (temp == yAxis11[j])
+        {
+            newBlock[i + 1] = yAxis10[j];
+            newBlock[i + 2] = yAxis9[j];
+            newBlock[i + 3] = yAxis8[j];
+            break;
+        }
+        else if (temp == yAxis12[j])
+        {
+            newBlock[i + 1] = yAxis11[j];
+            newBlock[i + 2] = yAxis10[j];
+            newBlock[i + 3] = yAxis9[j];
+            break;
+        }
+        else if (temp == yAxis13[j])
+        {
+            newBlock[i + 1] = yAxis12[j];
+            newBlock[i + 2] = yAxis11[j];
+            newBlock[i + 3] = yAxis10[j];
+            break;
+        }
+        else if (temp == yAxis14[j])
+        {
+            newBlock[i + 1] = yAxis13[j];
+            newBlock[i + 2] = yAxis12[j];
+            newBlock[i + 3] = yAxis11[j];
+            break;
+        }
+        else if (temp == yAxis15[j])
+        {
+            newBlock[i + 1] = yAxis14[j];
+            newBlock[i + 2] = yAxis13[j];
+            newBlock[i + 3] = yAxis12[j];
+            break;
+        }
+    }
+;
+    printf("%s", newBlock);
+  }
+
+  return *block;
+}
+
+unsigned char invert_shift_rows(unsigned char* block, aes_block_size_t block_size) 
+{
+  char* newBlock = "";
+
+  for(int i = 0; i < strlen(block) / 4; i++)
+  {
+    for(int j = 0; j < 16; j++)
+    {
+        char temp = block[i]&block[i+1];
+        if (temp == yAxis0[j])
+        {
+            newBlock[i + 1] = yAxis1[j];
+            newBlock[i + 2] = yAxis2[j];
+            newBlock[i + 3] = yAxis3[j];
+            break;
+        }
+        else if (temp == yAxis1[j])
+        {
+            newBlock[i + 1] = yAxis2[j];
+            newBlock[i + 2] = yAxis3[j];
+            newBlock[i + 3] = yAxis4[j];
+            break;
+        }
+        else if (temp == yAxis2[j])
+        {
+            newBlock[i + 1] = yAxis3[j];
+            newBlock[i + 2] = yAxis4[j];
+            newBlock[i + 3] = yAxis5[j];
+            break;
+        }
+        else if (temp == yAxis3[j])
+        {
+            newBlock[i + 1] = yAxis4[j];
+            newBlock[i + 2] = yAxis5[j];
+            newBlock[i + 3] = yAxis6[j];
+            break;
+        }
+        else if (temp == yAxis4[j])
+        {
+            newBlock[i + 1] = yAxis5[j];
+            newBlock[i + 2] = yAxis6[j];
+            newBlock[i + 3] = yAxis7[j];
+            break;
+        }
+        else if (temp == yAxis5[j])
+        {
+            newBlock[i + 1] = yAxis6[j];
+            newBlock[i + 2] = yAxis7[j];
+            newBlock[i + 3] = yAxis8[j];
+            break;
+        }
+        else if (temp == yAxis6[j])
+        {
+            newBlock[i + 1] = yAxis7[j];
+            newBlock[i + 2] = yAxis8[j];
+            newBlock[i + 3] = yAxis9[j];
+            break;
+        }
+        else if (temp == yAxis7[j])
+        {
+            newBlock[i + 1] = yAxis8[j];
+            newBlock[i + 2] = yAxis9[j];
+            newBlock[i + 3] = yAxis10[j];
+            break;
+        }
+        else if (temp == yAxis8[j])
+        {
+            newBlock[i + 1] = yAxis9[j];
+            newBlock[i + 2] = yAxis10[j];
+            newBlock[i + 3] = yAxis11[j];
+            break;
+        }
+        else if (temp == yAxis9[j])
+        {
+            newBlock[i + 1] = yAxis10[j];
+            newBlock[i + 2] = yAxis11[j];
+            newBlock[i + 3] = yAxis12[j];
+            break;
+        }
+        else if (temp == yAxis10[j])
+        {
+            newBlock[i + 1] = yAxis11[j];
+            newBlock[i + 2] = yAxis12[j];
+            newBlock[i + 3] = yAxis13[j];
+            break;
+        }
+        else if (temp == yAxis11[j])
+        {
+            newBlock[i + 1] = yAxis12[j];
+            newBlock[i + 2] = yAxis13[j];
+            newBlock[i + 3] = yAxis14[j];
+            break;
+        }
+        else if (temp == yAxis12[j])
+        {
+            newBlock[i + 1] = yAxis13[j];
+            newBlock[i + 2] = yAxis14[j];
+            newBlock[i + 3] = yAxis15[j];
+            break;
+        }
+        else if (temp == yAxis13[j])
+        {
+            newBlock[i + 1] = yAxis14[j];
+            newBlock[i + 2] = yAxis15[j];
+            newBlock[i + 3] = yAxis0[j];
+            break;
+        }
+        else if (temp == yAxis14[j])
+        {
+            newBlock[i + 1] = yAxis15[j];
+            newBlock[i + 2] = yAxis0[j];
+            newBlock[i + 3] = yAxis1[j];
+            break;
+        }
+        else if (temp == yAxis15[j])
+        {
+            newBlock[i + 1] = yAxis0[j];
+            newBlock[i + 2] = yAxis1[j];
+            newBlock[i + 3] = yAxis2[j];
+            break;
+        }
+    }
+;
+    printf("%s", newBlock);
+  }
+
+  return *block;
+}
+
 unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
   int loopAmount = 0;
@@ -617,13 +875,13 @@ unsigned char* encrypt(unsigned char* plaintext, unsigned char* key, aes_block_s
   for (int i = 0; i < loopAmount - 1; i++) 
   {
     *cipherText = sub_bytes(cipherText, block_size);
-    //*cipherText = shift_rows(cipherText, block_size);
+    *cipherText = shift_rows(cipherText, block_size);
     //*cipherText = mix_columns(cipherText, block_size);
     //*cipherText = add_round_key(cipherText, key, block_size);
   }
 
   *cipherText = sub_bytes(cipherText, block_size);
-  //*cipherText = shift_rows(cipherText, block_size);
+  *cipherText = shift_rows(cipherText, block_size);
   //*cipherText = add_round_key(cipherText, key, block_size);
 
   return output;
@@ -660,14 +918,14 @@ unsigned char* aes_decrypt_block(unsigned char* ciphertext, unsigned char* key, 
   unsigned char* plaintext = ciphertext;
 
   //*plaintext = add_round_key(plaintext, key, block_size);
-  //*plaintext = invert_shift_rows(plaintext, block_size);
+  *plaintext = invert_shift_rows(plaintext, block_size);
   *plaintext = invert_sub_bytes(plaintext, block_size);
 
   for (int i = 0; i < loopAmount - 1; i++) 
   {
     //*plaintext = add_round_key(plaintext, key, block_size);
     //*plaintext = invert_mix_columns(plaintext, block_size);
-    //*plaintext = invert_shift_rows(plaintext, block_size);
+    *plaintext = invert_shift_rows(plaintext, block_size);
     *plaintext = invert_sub_bytes(plaintext, block_size);
   }
 

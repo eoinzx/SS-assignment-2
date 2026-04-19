@@ -80,10 +80,46 @@ unsigned char* expand_key(unsigned char* cipher_key, aes_block_size_t block_size
 
 unsigned char* aes_encrypt_block(unsigned char* plaintext, unsigned char* key, aes_block_size_t block_size) 
 {
+  int loopAmount = 0;
   unsigned char* output = (unsigned char*) malloc
   (
     sizeof(unsigned char) * block_size
   );
+
+  if (block_size == 16)
+  {
+    loopAmount = 1;
+  }  
+  else if (block_size == 32)
+  {
+    loopAmount = 12;
+  }
+  else if (block_size == 64)
+  {
+    loopAmount = 14;
+  }
+  else
+  {
+    printf("%d", block_size);
+    printf(" Not a valid encryption type eee");
+    return 0;
+  }
+
+  unsigned char* cipherText = plaintext;
+
+  //cipherText = add_round_key(cipherText, key, block_size);
+
+  for (int i = 0; i < loopAmount - 1; i++) 
+  {
+    //*cipherText = sub_bytes(cipherText, block_size);
+    //*cipherText = shift_rows(cipherText, block_size);
+    //*cipherText = mix_columns(cipherText, block_size);
+    //*cipherText = add_round_key(cipherText, key, block_size);
+  }
+
+  //*cipherText = sub_bytes(cipherText, block_size);
+  //*cipherText = shift_rows(cipherText, block_size);
+  //*cipherText = add_round_key(cipherText, key, block_size);
 
   return output;
 }
